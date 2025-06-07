@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  reserva-api:
+    build: .
+    container_name: reserva-api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postq-db
+    environment:
+      DATABASE_URL: postgres://root:root@postq-db:5432/reservas_db
+    volumes:
+      - .:/app
+    restart: unless-stopped
+
+  postq-db:
+    image: postgres:15
+    container_name: reservas_db
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: reservas_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

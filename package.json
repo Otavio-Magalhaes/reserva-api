@@ -3,14 +3,24 @@
   "version": "1.0.0",
   "description": "Reserva de mesas restaurante",
   "license": "ISC",
-  "author": "",
+  "author": "Otavio Magalhaes",
   "type": "module",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
+    "build": "tsup ./server.ts --outDir dist",
+    "start:dev": "tsx watch ./server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "express": "^5.1.0",
-    "nodemon": "^3.1.10"
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.15.30",
+    "tsup": "^8.5.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
   }
 }
