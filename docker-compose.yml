@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  reserva-api:
+  reservas-api:
     build: .
-    container_name: reserva-api
+    container_name: reservas-api
     ports:
       - "3000:3000"
     depends_on:
