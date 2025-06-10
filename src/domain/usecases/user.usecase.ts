@@ -1,7 +1,8 @@
 import { User, UserRole } from "../entities/user.entity.js";
 import bcrypt from "bcrypt"
 import type { UserPrismaRepository } from "../../infrastructure/database/prisma/userPrisma.repository.js";
-import type { CreateUserDTO } from "../../interfaces/schemas/createUser.schema.js";
+import type { CreateUserDTO } from "../../interfaces/dto/user.dto.js";
+
 
 export async function registerUser(userRepository: UserPrismaRepository, userData: CreateUserDTO):Promise<User> {
   const existingUser = await userRepository.findByEmail(userData.email)

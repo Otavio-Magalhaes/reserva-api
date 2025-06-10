@@ -5,7 +5,7 @@ export abstract class UserRepository{
     throw new Error('Method not Implemented.')
   }
 
-  async findByEmail(email:string): Promise<{ id: string; name: string; email: string; role: string } | null>{
+  async findByEmail(email:string): Promise<{ id: string; name: string; email: string; role: string, password: string } | null>{
     throw new Error('Method not Implemented.')
   }
 

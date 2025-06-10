@@ -22,12 +22,7 @@ export class UserPrismaRepository extends UserRepository{
   async findById(id: string): Promise< UserWithIdDTO | null> {
     return await prisma.user.findUnique({
       where:{id},
-      select:{
-        id: true,
-        name: true,
-        email: true,
-        role: true
-      }
+      
     })
   }
 
@@ -35,12 +30,6 @@ export class UserPrismaRepository extends UserRepository{
   async findByEmail(email: string): Promise<UserWithIdDTO | null> {
     return await prisma.user.findUnique({
       where:{email},
-      select:{
-        id:true,
-        name:true,
-        email:true,
-        role:true
-      }
     })
   }
 }
