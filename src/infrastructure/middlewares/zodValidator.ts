@@ -10,7 +10,7 @@ export const zodValidator = (schema:ZodSchema) =>{
       response.status(400).json({msg: result.error.errors})
       return 
     }
-    request.body = result.data;
+    request.body = schema.parse(request.body)
     next();
   }
 }            

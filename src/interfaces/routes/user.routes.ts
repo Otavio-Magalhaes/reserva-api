@@ -7,3 +7,4 @@ import { createUserSchema } from "../schemas/createUser.schema.js";
 const router = Router()
 
 router.post("/api/v1/users",zodValidator(createUserSchema) , createUser)
+export default router
