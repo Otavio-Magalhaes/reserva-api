@@ -8,7 +8,7 @@
   "main": "server.ts",
   "scripts": {
     "build": "tsup ./server.ts --outDir dist",
-    "start:dev": "tsx watch ./server.ts",
+    "start:dev": "prisma generate && tsx watch ./server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
