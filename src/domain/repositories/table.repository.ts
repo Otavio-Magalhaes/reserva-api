@@ -8,4 +8,8 @@ export abstract class TableRepository{
   async findById(id: string): Promise <Table | null>{
     throw new Error('Method not Implemented.')
   }
+
+  async getAll(): Promise<Array<object> | null>{
+    throw new Error('Method not Implemented.')
+  }
 }

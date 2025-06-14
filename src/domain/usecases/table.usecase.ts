@@ -17,3 +17,12 @@ export async function registerTable(tableRepository: TableRepository, tableData:
     throw new Error("Cant create new Table")
   }
 }
+
+export async function getTables(tableRepository:TableRepository){
+  try {
+    const tables = await tableRepository.getAll()
+    return tables
+  } catch (err) {
+    throw new Error("Failed to retrieve tables")
+  }
+}

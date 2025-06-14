@@ -16,6 +16,11 @@ export class tablePrismaRepository extends TableRepository{
       capacity: createTable.capacity,
       status: createTable.status
     })
-   
   }
+
+async getAll(): Promise<Array<object> | null> {
+  const tables = await prisma.table.findMany()
+
+  return tables
+}
 }
