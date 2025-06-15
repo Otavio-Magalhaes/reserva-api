@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getTables, registerTable, updateTable } from "../../domain/usecases/table.usecase.js"
+import { deleteTable, getTables, registerTable, updateTable } from "../../domain/usecases/table.usecase.js"
 import { tablePrismaRepository } from "../../infrastructure/database/prisma/tablePrisma.repository.js"
 import type { createTableDTO, updateTableDTO } from "../dto/table.dto.js"
 
@@ -68,5 +68,18 @@ export async function handleUpdateTable(request: Request, response: Response) {
       response.status(500).json({message:"Internal Server Error"})
     }
   }
+}
 
+export async function handleDeleteTable(request:Request, response:Response){
+  try {
+    const id = request.params.id
+    await deleteTable(tableRepository, id)
+    response.status(200).json({ message: "Table deleted successfully" })
+  } catch (err) {
+    if (err instanceof Error && err.message === "Table not found") {
+      response.status(404).json({ message: "Table not found" })
+    } else {
+      response.status(500).json({ message: "Internal Server Error" })
+    }
+  }
 }

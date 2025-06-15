@@ -16,5 +16,8 @@ export abstract class TableRepository{
   async update(table: Table): Promise <Table | null>{
     throw new Error('Method not Implemented')
   }
-
+  
+  async delete(id:string):Promise<void>{
+    throw new Error('Method not Implemented')
+  }
 }

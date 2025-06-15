@@ -53,4 +53,10 @@ export class tablePrismaRepository extends TableRepository {
     })
   }
 
+  async delete(id:string):Promise<void>{
+    await prisma.table.delete({
+      where:{id}
+    })
+  }
+
 }

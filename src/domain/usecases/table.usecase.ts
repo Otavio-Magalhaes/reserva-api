@@ -1,6 +1,7 @@
+import { tablePrismaRepository } from "../../infrastructure/database/prisma/tablePrisma.repository.js"
 import type { createTableDTO, updateTableDTO } from "../../interfaces/dto/table.dto.js"
 import { Table } from "../entities/table.entity.js"
-import type { TableRepository } from "../repositories/table.repository.js"
+import { TableRepository } from "../repositories/table.repository.js"
 
 
 export async function registerTable(tableRepository: TableRepository, tableData: createTableDTO) {
@@ -27,7 +28,7 @@ export async function getTables(tableRepository: TableRepository) {
   }
 }
 
-export async function updateTable(tableRepository: TableRepository, tableData: updateTableDTO, id: string): Promise <Table | null> {
+export async function updateTable(tableRepository: TableRepository, tableData: updateTableDTO, id: string): Promise<Table | null> {
   try {
     const existingTable = await tableRepository.findById(id)
     if (!existingTable) throw new Error("Table not found")
@@ -42,6 +43,19 @@ export async function updateTable(tableRepository: TableRepository, tableData: u
     return updatedTable
   } catch (err) {
     console.error("Error updating table in database:", err);
-    throw new Error("Could not update table. Please try again later.");
+    throw err
   }
+}
+
+export async function deleteTable(tableRepository: TableRepository, id: string) {
+  try {
+    const existingTable = await tableRepository.findById(id)
+    if (!existingTable) throw new Error("Table not found")
+    const result = await tableRepository.delete(id)
+    return result
+  } catch (err) {
+    console.error("Error deleting table in database:", err);
+    throw err
+  }
+
 }
