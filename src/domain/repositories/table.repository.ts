@@ -12,4 +12,9 @@ export abstract class TableRepository{
   async getAll(): Promise<Array<object> | null>{
     throw new Error('Method not Implemented.')
   }
+  
+  async update(table: Table): Promise <Table | null>{
+    throw new Error('Method not Implemented')
+  }
+
 }
