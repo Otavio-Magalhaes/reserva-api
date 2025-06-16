@@ -41,3 +41,17 @@ export async function createReservation(ReservationRepository: ReservationReposi
     throw err
   }
 }
+
+
+export async function getAllUserReservation(reservationRepository:ReservationRepository, userId:string): Promise<Reservation[]>{
+  try {
+    const reservations = await reservationRepository.findAllByUserId(userId);
+
+    if (!reservations || reservations.length === 0) {
+      throw new Error("No reservations found for this user");
+    }
+    return reservations;
+  } catch (err) {
+    throw err
+  }
+}

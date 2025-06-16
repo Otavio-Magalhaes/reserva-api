@@ -12,5 +12,8 @@ export abstract class ReservationRepository{
   async update(reservation: Reservation): Promise <Reservation | null>{
     throw new Error('Method not Implemented')
   }
-  
+
+  async findAllByUserId(id:string): Promise<Reservation[] | null >{
+    throw new Error('Method not Implemented')
+  }
 }
