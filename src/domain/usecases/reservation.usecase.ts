@@ -3,17 +3,17 @@ import { Reservation } from "../entities/reservation.entity.js";
 import type { ReservationRepository } from "../repositories/reservation.repository.js";
 import type { TableRepository } from "../repositories/table.repository.js";
 import { UserRepository } from "../repositories/user.repository.js";
+import { TableValidator } from "../validators/table.validator.js";
+import { UserValidator } from "../validators/user.validator.js";
 
-export async function createReservation(ReservationRepository: ReservationRepository, UserRepository: UserRepository, TableRepository: TableRepository, reservationData: createReservationDTO) {
+export async function createReservation(reservationRepository: ReservationRepository, userRepository: UserRepository, tableRepository: TableRepository, reservationData: createReservationDTO) {
   try {
-    const existingUser = await UserRepository.findById(reservationData.user_id)
-    if (!existingUser) {
-      throw new Error("User Not Found")
-    }
-    const existingTable = await TableRepository.findById(reservationData.table_id)
-    if (!existingTable) {
-      throw new Error("Table Not Found")
-    }
+    const userValidator = new UserValidator(userRepository);
+    const existingUser = await userValidator.ensureUserExists(reservationData.user_id)
+
+    const tableValidator = new TableValidator(tableRepository)
+    const existingTable = await tableValidator.ensureTableExists(reservationData.table_id)
+    
     const now = new Date();
     const minimumDate = new Date(now.getTime() + 30 * 60000);
 
@@ -36,7 +36,7 @@ export async function createReservation(ReservationRepository: ReservationReposi
       status: reservationData.status,
       data_reservation: reservationDate
     })
-    const result = ReservationRepository.create(newReservation)
+    const result = reservationRepository.create(newReservation)
   } catch (err) {
     throw err
   }

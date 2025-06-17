@@ -37,9 +37,7 @@ export async function handlerGetReservations(request:Request,response:Response){
     if (!userId) {
       return response.status(401).json({ message: "Unauthorized" });
     }
-
     const reservations = await getAllUserReservation(reservationRepository, userId);
-
     return response.status(200).json({
       message: "Reservations fetched successfully",
       reservations: reservations.map(r => r.toPlainObject())
