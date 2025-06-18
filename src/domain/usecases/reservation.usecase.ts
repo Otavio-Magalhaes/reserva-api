@@ -3,6 +3,7 @@ import { Reservation } from "../entities/reservation.entity.js";
 import type { ReservationRepository } from "../repositories/reservation.repository.js";
 import type { TableRepository } from "../repositories/table.repository.js";
 import { UserRepository } from "../repositories/user.repository.js";
+import { ReservationValidator } from "../validators/reservation.validator.js";
 import { ReservationDateValidator } from "../validators/reservationDate.validator.js";
 import { TableValidator } from "../validators/table.validator.js";
 import { UserValidator } from "../validators/user.validator.js";
@@ -20,9 +21,12 @@ export async function createReservation(
     const tableValidator = new TableValidator(tableRepository)
     const existingTable = await tableValidator.ensureTableExists(reservationData.table_id)
 
-    const reservationValidator = new ReservationDateValidator()
-    const reservationDate = reservationValidator.validate(reservationData.data_reservation)
+    const dateReservationValidator = new ReservationDateValidator()
+    const reservationDate = dateReservationValidator.validate(reservationData.data_reservation)
 
+    const reservationValidator = new ReservationValidator(reservationRepository)
+    const noConflictTableAndUser = await reservationValidator.ensureNoConflictReservation(reservationData.table_id, reservationData.user_id, reservationDate)
+    
     const newReservation = new Reservation({
       user_id: reservationData.user_id,
       table_id: reservationData.table_id,

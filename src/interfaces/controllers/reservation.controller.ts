@@ -17,14 +17,22 @@ export async function handlerReservation(request:Request, response:Response){
       message: "Reservation Create Sucessfuly",
       reservation: newReservation
     })
+    
   } catch (err) {
     console.log(err)
     if(err instanceof Error && err.message == "User Not Found"){
       response.status(400).json({message: err.message})
+      return
     } else if(err instanceof Error && err.message == "Table Not Found"){
       response.status(400).json({message: err.message})
-    } else{
+    } else if(err instanceof Error && err.message == "There is already a reservation for this table at the selected time.") {
+      response.status(400).json({message: err.message})
+    } else if(err instanceof Error && err.message == "User already has a reservation at the selected time."){
+      response.status(400).json({message: err.message})
+    }
+    else{
       response.status(500).json({message:"Internal Server Error"})
+      return
     }
   }
 }
@@ -35,17 +43,20 @@ export async function handlerGetReservations(request:Request,response:Response){
    const userId = request.user?.id;
 
     if (!userId) {
-      return response.status(401).json({ message: "Unauthorized" });
+      response.status(401).json({ message: "Unauthorized" });
+      return 
     }
     const reservations = await getAllUserReservation(reservationRepository, userId);
-    return response.status(200).json({
+    response.status(200).json({
       message: "Reservations fetched successfully",
       reservations: reservations.map(r => r.toPlainObject())
     });
   } catch (err) {
      if (err instanceof Error && err.message === "No reservations found for this user") {
-      return response.status(404).json({ message: err.message });
+       response.status(404).json({ message: err.message });
+      return 
     }
-    return response.status(500).json({ message: "Internal Server Error" });
+    response.status(500).json({ message: "Internal Server Error" });
+    return 
   }
 }

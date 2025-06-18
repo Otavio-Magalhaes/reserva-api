@@ -16,4 +16,12 @@ export abstract class ReservationRepository{
   async findAllByUserId(id:string): Promise<Reservation[] | null >{
     throw new Error('Method not Implemented')
   }
+
+  async findByTableAndDate(table_id:string, date_reservation:Date): Promise<Reservation | null>{
+    throw new Error('Method not Implemented')
+  }
+
+  async findByUserAndDate(user_id:string, date_reservation:Date):Promise<Reservation | null>{
+    throw new Error('Method not Implemented')
+  }
 }
