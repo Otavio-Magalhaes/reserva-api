@@ -1,0 +1,263 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Reservation API",
+    "description": "API for managing users, tables and reservations",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/api/v1/users": {
+      "post": {
+        "summary": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User created" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "User login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login successful" },
+          "400": { "description": "Invalid credentials" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/v1/tables": {
+      "post": {
+        "summary": "Create a new table",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Table"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Table created" },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "get": {
+        "summary": "List all tables",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/v1/tables/{id}": {
+      "patch": {
+        "summary": "Update a table",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TablePatch" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Table updated" },
+          "404": { "description": "Table not found" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "summary": "Delete a table",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Table deleted" },
+          "404": { "description": "Table not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/v1/reservations": {
+      "post": {
+        "summary": "Create a reservation",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Reservation" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Reservation created" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "get": {
+        "summary": "List user's reservations",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "List of reservations" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string" }
+        },
+        "required": ["name", "email", "password"]
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string" }
+        },
+        "required": ["email", "password"]
+      },
+      "Table": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "capacity": { "type": "number" },
+          "status": {
+            "type": "string",
+            "enum": ["available", "reserved", "inactive"]
+          }
+        },
+        "required": ["name", "capacity", "status"]
+      },
+      "TablePatch": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "capacity": { "type": "number" },
+          "status": {
+            "type": "string",
+            "enum": ["available", "reserved", "inactive"]
+          }
+        }
+      },
+      "Reservation": {
+        "type": "object",
+        "properties": {
+          "user_id": { "type": "string" },
+          "table_id": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["active", "cancelled"]
+          },
+          "data_reservation": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-06-15T19:30:00Z"
+          }
+        },
+        "required": ["user_id", "table_id", "status", "data_reservation"]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}
