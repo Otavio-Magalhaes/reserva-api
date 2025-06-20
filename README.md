@@ -119,14 +119,14 @@ src/
 ├── config/                   # Configurações como env
 ├── docs/                     # Documentação (Swagger)
 ├── domain/                   # Regras de negócio
-│   ├── entities/             # Entidades do domínio
-│   ├── repositories/         # Interfaces dos repositórios
-│   ├── usecases/             # Casos de uso (regras do sistema)
-│   └── validators/           # Validações de domínio
-├── infrastructure/           # Implementações técnicas
+│   ├── entities/             # Entidades 
+│   ├── repositories/         # Class dos repositórios
+│   ├── usecases/             # Casos de uso 
+│   └── validators/           # Validações 
+├── infrastructure/           
 │   ├── database/
 │   │   └── prisma/           # Repositórios Prisma ORM
-│   └── middlewares/          # Middlewares de autenticação, etc
+│   └── middlewares/          
 ├── interfaces/               # Camada de entrada (Controllers, DTOs, Routes)
 │   ├── controllers/
 │   ├── dto/
