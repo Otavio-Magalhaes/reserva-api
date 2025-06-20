@@ -20,6 +20,11 @@ export async function createReservation(
 
     const tableValidator = new TableValidator(tableRepository)
     const existingTable = await tableValidator.ensureTableExists(reservationData.table_id)
+    const tableStatus = await tableValidator.checkTableStatus(reservationData.table_id)
+    if(tableStatus!="available"){
+      throw new Error("Table is not available")
+    }
+    tableValidator.updateTableStatus(reservationData.table_id, 'reserved')
 
     const dateReservationValidator = new ReservationDateValidator()
     const reservationDate = dateReservationValidator.validate(reservationData.data_reservation)
